@@ -394,3 +394,155 @@ revealBtn.addEventListener('click', showContent)
 ```
 
 -this method is very useful for showing menu, display errorMessages etc.
+
+### Event Propagation
+
+Means how eventListener travels through DOM tree
+3 Phases :
+-Event Capturing
+-Target
+-Event Bubbling (hot water example)
+
+index.html
+
+```js
+<body>
+  <div class="div1">
+    <div class="div2">
+      <button>Click</button>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+```
+
+index.css
+
+```js
+.div2 {
+  padding: 4rem;
+  border: 2px solid black;
+  max-width: 8rem;
+}
+
+.div1 {
+  padding: 2rem;
+  border: 2px solid red;
+  max-width: 4rem;
+}
+
+button {
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+```
+
+app.js
+
+```js
+// Event Propagation
+
+window.addEventListener(
+  'click',
+  function () {
+    console.log('Window')
+  },
+  true
+)
+
+document.addEventListener(
+  'click',
+  function () {
+    console.log('Document')
+  },
+  true
+)
+
+document.querySelector('.div1').addEventListener(
+  'click',
+  function () {
+    console.log('DIV 1')
+  },
+  true
+)
+
+document.querySelector('.div2').addEventListener(
+  'click',
+  function () {
+    console.log('DIV 2')
+  },
+  true
+)
+
+document.querySelector('button').addEventListener(
+  'click',
+  function (e) {
+    console.log(e) // e-> gives info/properties about the event e.g., type, shiftKey, target
+    console.log(e.target)
+    console.log((e.target.innerText = 'clicked'))
+  },
+  true
+)
+```
+Now change all third optons into false and see the changes in console
+
+stopPropagation() method stops the propagation
+-add stopPropagation() in div 2
+
+```js
+document.querySelector('.div2').addEventListener(
+  'click',
+  function (e) {
+    e.stopPropagation()
+    console.log('DIV 2')
+  },
+  false
+)
+```
+another utility
+-setting third option as { once: true }
+
+```js
+document.querySelector('.div2').addEventListener(
+  'click',
+  function () {
+    // e.stopPropagation()
+    console.log('DIV 2')
+  },
+  { once: true }
+)
+```
+preventDefault()
+-prevent any default behaviour that might occurs on an element
+
+index.html
+
+```html
+<div class="div1">
+  <div class="div2">
+    <a href="" class="button">
+      Click
+    </a>
+  </div>
+</div>
+```
+also correct error in app.js
+
+```js
+document.querySelector('.button').addEventListener
+```
+
+Now if you click the button, it will be refresh immediately because of the default behavior of anchor tag.
+preventDefault() is used to prevent any default behaviour
+
+```js
+document.querySelector('.button').addEventListener(
+  'click',
+  function (e) {
+    e.preventDefault()
+    console.log((e.target.innerText = 'clicked'))
+  },
+  false
+)
+```
