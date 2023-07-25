@@ -1,0 +1,17 @@
+.div1 {
+  padding: 4rem;
+  border: 2px solid black;
+  max-width: 8rem;
+}
+
+.div2 {
+  padding: 2rem;
+  border: 2px solid red;
+  max-width: 4rem;
+}
+
+button {
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+}

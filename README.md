@@ -485,6 +485,7 @@ document.querySelector('button').addEventListener(
   true
 )
 ```
+
 Now change all third optons into false and see the changes in console
 
 stopPropagation() method stops the propagation
@@ -500,6 +501,7 @@ document.querySelector('.div2').addEventListener(
   false
 )
 ```
+
 another utility
 -setting third option as { once: true }
 
@@ -513,6 +515,7 @@ document.querySelector('.div2').addEventListener(
   { once: true }
 )
 ```
+
 preventDefault()
 -prevent any default behaviour that might occurs on an element
 
@@ -521,12 +524,11 @@ index.html
 ```html
 <div class="div1">
   <div class="div2">
-    <a href="" class="button">
-      Click
-    </a>
+    <a href="" class="button"> Click </a>
   </div>
 </div>
 ```
+
 also correct error in app.js
 
 ```js
@@ -546,3 +548,90 @@ document.querySelector('.button').addEventListener(
   false
 )
 ```
+
+### Event Delegation
+
+Event Delegation is basically a pattern to handle events efficiently. Instead of adding an event listener to each and every similar element, we can add an event listener to a parent element and call an event on a particular target using the .target property of the event object.
+
+take an example
+
+index.html
+
+```html
+<body>
+  <ul id="movies">
+    <li id="inception">inception</li>
+    <li id="avengers">avengers</li>
+    <li id="intersteller">intersteller</li>
+    <li id="oppenheimer">oppenheimer</li>
+  </ul>
+
+  <script src="app.js"></script>
+</body>
+```
+
+app.js
+
+```js
+// Event Delegation
+
+document.querySelector('#inception').addEventListener('click', function (e) {
+  console.log('Inception')
+
+  //   e.target.style.backgroundColor = 'red'
+  const target = e.target
+
+  if (target.matches('li')) {
+    target.style.backgroundColor = 'blue'
+  }
+})
+
+document.querySelector('#avengers').addEventListener('click', function (e) {
+  console.log('Avengers')
+
+  //   e.target.style.backgroundColor = 'red'
+  const target = e.target
+
+  if (target.matches('li')) {
+    target.style.backgroundColor = 'blue'
+  }
+})
+
+document.querySelector('#intersteller').addEventListener('click', function (e) {
+  console.log('intersteller')
+
+  //   e.target.style.backgroundColor = 'red'
+  const target = e.target
+
+  if (target.matches('li')) {
+    target.style.backgroundColor = 'blue'
+  }
+})
+```
+
+So is there any technique to achive the same result by writing less code.
+Yes, by event delegation.
+
+```js
+document.querySelector('#movies').addEventListener('click', function (e) {
+  console.log(e.target.getAttribute('id') + ' is clicked')
+
+  const target = e.target
+  if (target.matches('li')) {
+    target.style.backgroundColor = 'blue'
+  }
+})
+
+//  future descendants that match a selector(from definition, e.g.,)
+
+const sports = document.querySelector('#movies')
+const newMovie = document.createElement('li')
+
+newMovie.innerText = 'Mission Impossible'
+newMovie.setAttribute('id', 'mi')
+
+sports.appendChild(newMovie)
+```
+
+-event delegation improve the performance and also take less space
+We can delegate the event from parent to dynamically created new items.
